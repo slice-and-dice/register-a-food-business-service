@@ -50,6 +50,7 @@ module.exports.validate = data => {
   info(`validationService: validate: called`);
   const result = [];
   const validatorResult = validator.validate(data, schema.registration);
+  info(validatorResult);
   // turn errors into key:value pairs
   validatorResult.errors.forEach(error => {
     const key = error.property.split(".")[1];
