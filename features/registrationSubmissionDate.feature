@@ -5,3 +5,4 @@ Feature: As Dani I need to be able to see the date Catelyn submitted her registr
         Given I have a new registration with all valid required fields
         When I submit it to the backend
         Then I get a success response
+        And I get a submission date

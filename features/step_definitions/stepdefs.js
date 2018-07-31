@@ -9,7 +9,7 @@ const sendRequest = async body => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json"
+        Accept: "application/json"
       },
       body: JSON.stringify(body)
     }
@@ -21,7 +21,7 @@ const sendRequest = async body => {
 const getRequest = async id => {
   const res = await fetch(`http://localhost:4000/api/registration/${id}`);
   return res.json();
-}
+};
 Given("I enter an email address without an @ symbol", function() {
   this.emailAddress = "skdjfh";
 });
@@ -132,7 +132,8 @@ Given("I have a new registration with all valid required fields", function() {
           establishment_postcode: "SW12 9RQ",
           establishment_first_line: "123",
           establishment_street: "Street",
-          establishment_town: "London"
+          establishment_town: "London",
+          establishment_type: "domestic"
         },
         activities: {
           customer_type: "End consumer"
@@ -175,7 +176,8 @@ Given(
             establishment_postcode: "SW12 9RQ",
             establishment_first_line: "123",
             establishment_street: "Street",
-            establishment_town: "London"
+            establishment_town: "London",
+            establishment_type: "domestic"
           },
           activities: {
             customer_type: "End consumer"
@@ -191,7 +193,8 @@ Given(
   }
 );
 Given("I have multiple conditional required fields", function() {
-  this.registration.registration.establishment.operator.operator_charity_name = "Op Charity Name";
+  this.registration.registration.establishment.operator.operator_charity_name =
+    "Op Charity Name";
 });
 
 When("I submit it to the backend", async function() {
@@ -210,6 +213,7 @@ When("I submit my multiple fields to the backend", async function() {
     establishment_postcode: "${this.establishment_postcode}", 
     establishment_first_line: "${this.establishment_first_line}",
     establishment_primary_number: "${this.establishment_primary_number}", 
+    establishment_type: "${this.establishment_type}",
     establishment_email: "${this.establishment_email}", 
     declaration1: "${this.declaration1}",  
     declaration2: "${this.declaration2}", 
@@ -227,8 +231,11 @@ Then("I get a success response", function() {
   assert.ok(this.response.regId);
 });
 
+Then("I get a submission date", function() {
+  assert.ok(this.response.reg_submission_date);
+});
 Then("I get an error response", function() {
-  assert.ok(this.response[0].message);
+  assert.ok(this.response.error);
 });
 
 Then("The non personal information is saved to the database", async function() {
